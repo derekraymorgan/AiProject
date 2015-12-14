@@ -55,9 +55,9 @@ def edits1(word):
     deletes = [a + b[1:] for a, b in s if b]
 
     # swap two letter that are next to each other
-    transposes = [a + b[1] + b[0] + b[2:] for a, b in s if len(b)>1]
+    transposes = [a + b[1] + b[0] + b[2:] for a, b in s if len(b) > 1]
 
-    # replace a every letter with every other possible letter
+    # replace every letter with every other possible letter
     replaces = [a + c + b[1:] for a, b in s for c in alphabet if b]
 
     # insert a new letter in every possible position
@@ -85,10 +85,29 @@ def correct(word):
 
     # this will return the first set that contains a word. The order of this sequence should significantly impact
     # results which means it has the possibility to be optimized
+    # known([word]) = maybe the word is not misspelled then don't correct it
+    # known(edits1(word)) = maybe the word is slightly misspelled, being off by only a single "edit distance"
+    # known_edits2(word) = maybe the word is slightly more misspelled, being off by only an "edit distance" of 2
+    # [word] = all else failed, maybe the word is correct and our system has never seen it before
+
+    #candidates = known([word]).union(known(edits1(word))).union(known_edits2(word)).union([word])
+
     candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
 
     # return the word with the highest frequency in our dictionary
     return max(candidates, key=NWORDS.get)
+
+
+# return a tuple containing the row and column index of the position of the letter relative to a keyboard
+def get_letter_indices(letter):
+
+    for row_index in range(len(keyboard)):
+
+        for col_index in range(len(keyboard[row_index])):
+
+            if letter == keyboard[row_index][col_index]:
+
+                return row_index, col_index
 
 
 ################ Testing code from here on ################
@@ -123,9 +142,9 @@ def spelltest(tests, bias=None, verbose=False):
                     print 'correct(%r) => %r (%d); expected %r (%d)' % \
                           (wrong, w, NWORDS[w], target, NWORDS[target])
 
-    return dict(bad=bad, n=n, bias=bias, pct=int(100. - 100.*bad/n), unknown=unknown, secs=int(time.clock()-start))
+    return dict(bad=bad, n=n, bias=bias, percent_correct=str(int(100. - 100.*bad/n))+'%', unknown=unknown, secs=int(time.clock()-start))
 
-tests1 = { 'access': 'acess', 'accessing': 'accesing', 'accommodation':
+tests1 = {'access': 'acess', 'accessing': 'accesing', 'accommodation':
 'accomodation acommodation acomodation', 'account': 'acount', 'address':
 'adress adres', 'addressable': 'addresable', 'arranged': 'aranged arrainged',
 'arrangeing': 'aranging', 'arrangement': 'arragment', 'articles': 'articals',
