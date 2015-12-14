@@ -77,6 +77,8 @@ def known_edits2(word):
 # returns a set of known words
 def known(words):
 
+    print max(set(['test1','tester','tester','test2']), key=NWORDS.get)
+
     return set(w for w in words if w in NWORDS)
 
 
@@ -90,9 +92,9 @@ def correct(word):
     # known_edits2(word) = maybe the word is slightly more misspelled, being off by only an "edit distance" of 2
     # [word] = all else failed, maybe the word is correct and our system has never seen it before
 
-    #candidates = known([word]).union(known(edits1(word))).union(known_edits2(word)).union([word])
+    candidates = known([word]).union(known(edits1(word))).union(known_edits2(word)).union([word])
 
-    candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
+    #candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
 
     # return the word with the highest frequency in our dictionary
     return max(candidates, key=NWORDS.get)
