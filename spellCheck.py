@@ -40,6 +40,10 @@ NWORDS = train(words(file('big.txt').read()))
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
+keyboard = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+            ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+            ['z', 'x', 'c', 'v', 'b', 'n', 'm']]
+
 
 # this will return all possible words with an edit distance of 1.
 def edits1(word):
