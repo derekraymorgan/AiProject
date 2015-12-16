@@ -95,7 +95,7 @@ def correct(word):
     # known_edits2(word) = maybe the word is slightly more misspelled, being off by only an "edit distance" of 2
     # [word] = all else failed, maybe the word is correct and our system has never seen it before
 
-    # candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
+    candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
     print '///////////////////////////////////////////'
 
 
