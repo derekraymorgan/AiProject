@@ -11,9 +11,10 @@ answering the question "how likely is c to appear in an English text?" So P("the
 probability, while P("zxzxzxzyyy") would be near zero.
 
 P(w|c), the probability that w would be typed in a text when the author meant c. This is the error model: think of it
- as answering "how likely is it that the author would type w by mistake when c was intended?"
+as answering "how likely is it that the author would type w by mistake when c was intended?"
 
-argmaxc, the control mechanism, which says to enumerate all feasible values of c, and then choose the one that gives the best combined probability score
+argmaxc, the control mechanism, which says to enumerate all feasible values of c, and then choose the one that gives the
+best combined probability score
 '''
 
 
@@ -33,10 +34,12 @@ def train(features):
 
         model[feature] += 1
 
+    print model
+
     return model
 
 
-NWORDS = train(words(file('big.txt').read()))
+NWORDS = train(words(file('small.txt').read()))
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -77,7 +80,7 @@ def known_edits2(word):
 # returns a set of known words
 def known(words):
 
-    print max(set(['test1','tester','tester','test2']), key=NWORDS.get)
+    #print max(set(['test1', 'tester', 'tester', 'test2']), key=NWORDS.get)
 
     return set(w for w in words if w in NWORDS)
 
@@ -92,9 +95,13 @@ def correct(word):
     # known_edits2(word) = maybe the word is slightly more misspelled, being off by only an "edit distance" of 2
     # [word] = all else failed, maybe the word is correct and our system has never seen it before
 
-    candidates = known([word]).union(known(edits1(word))).union(known_edits2(word)).union([word])
+    # candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
+    print '///////////////////////////////////////////'
 
-    #candidates = known([word]) or known(edits1(word)) or known_edits2(word) or [word]
+
+    print candidates
+
+
 
     # return the word with the highest frequency in our dictionary
     return max(candidates, key=NWORDS.get)
@@ -146,7 +153,10 @@ def spelltest(tests, bias=None, verbose=False):
 
     return dict(bad=bad, n=n, bias=bias, percent_correct=str(int(100. - 100.*bad/n))+'%', unknown=unknown, secs=int(time.clock()-start))
 
-tests1 = {'access': 'acess', 'accessing': 'accesing', 'accommodation':
+tests1 = {'be': 'ba'}
+
+'''
+    {'access': 'acess', 'accessing': 'accesing', 'accommodation':
 'accomodation acommodation acomodation', 'account': 'acount', 'address':
 'adress adres', 'addressable': 'addresable', 'arranged': 'aranged arrainged',
 'arrangeing': 'aranging', 'arrangement': 'arragment', 'articles': 'articals',
@@ -337,6 +347,7 @@ tests2 = {'forbidden': 'forbiden', 'decisions': 'deciscions descisions',
 'biulding', 'required': 'reequired', 'necessitates': 'nessisitates',
 'together': 'togehter', 'profits': 'proffits'}
 
+'''
 
 if __name__ == '__main__':
     print spelltest(tests1)
